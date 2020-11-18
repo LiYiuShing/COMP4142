@@ -5,15 +5,17 @@
 It built with Express("~4.16.1").
 
 ## Pre-require
-NODE 
+Node
 https://nodejs.org/en/
-GIT
+
+Git
 https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
 
 
 ## Getting Started
 
 ```
+git clone https://github.com/LiYiuShing/COMP4142.git
 cd comp4142
 npm install
 npm start
@@ -21,8 +23,15 @@ npm start
 
 And Browse http://localhost:4000/
 
-## Git Commit the code
-```
-git 
+## Development
+Please develop your in /src
 
+### Github Commit
+
+```
+git add .
+git commit -m "Your Commit Messages"
+git remote add origin https://github.com/LiYiuShing/COMP4142.git
+git branch -M main
+git push -u origin main
 ```

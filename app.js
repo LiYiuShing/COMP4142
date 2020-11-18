@@ -22,7 +22,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Router
+// Main 
 app.use("/", indexRouter);
 
 app.listen(4000, () => console.log("Server Up and running at 4000"));
