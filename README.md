@@ -24,9 +24,9 @@ npm start
 And Browse http://localhost:4000/
 
 ## Development
-Please develop your in /src
+Please develop in your /src
 
-### Github Commit
+## Github Commit
 
 ```
 git add .
