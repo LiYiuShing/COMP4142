@@ -1,5 +1,3 @@
 // DB connector
 
 // MongoDB
-
-// Redis
