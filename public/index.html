@@ -1,61 +1,73 @@
 <html>
-   <head>
-      <title>COMP4142 E-Payment and CryptoCurrency</title>
-      <link rel="stylesheet" href="/stylesheets/style.css">
-      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-   </head>
-   <body>
-      <div class="container">
-        <h1>COMP4142 E-Payment and CryptoCurrency - Wallet</h1>
-        <h3>Your Information</h3>
-        <table class="table">
-          <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Details</th>
-              </tr>
-          </thead>
-          <tbody>
-              <tr>
-                <th scope="row">Public Address</th>
-                <td>A</td>
-              </tr>
-              <tr>
-                <th scope="row sm">Coin Balance</th>
-                <td>123</td>
-              </tr>
-          </tbody>
-        </table>
-        <hr>
-        <h3>Mining</h3>
-        <button type="button" class="btn btn-primary">CLICK ME TO MINE A BLOCK</button>
 
-        <hr>
+<head>
+  <title>COMP4142 E-Payment and CryptoCurrency</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
 
-        <h3>Send coins</h3>
-        <form>
-          <div class="form-row">
-              <div class="form-group col-md-8">
-                <label for="address">Receiver Address</label>
-                <input type="text" class="form-control" id="addressInput" placeholder="04d24sdf35q2b33a8b02d233a...">
-              </div>
-              <div class="form-group col-md-4">
-                <label for="amount">Amount</label>
-                <input type="amount" class="form-control" id="amountInput" placeholder="0">
-              </div>
-              <div class="form-group col-md-12">
-                <button type="submit" class="btn btn-primary">SEND</button>
-              </div>
-            </div>
-        </form>
-        <hr>
-        <h3>Transaction Pool</h3>
-        <div class="alert alert-secondary" role="alert">
-          SDSDD
+<body>
+  <div class="container">
+    <h1>COMP4142 E-Payment and CryptoCurrency - Wallet</h1>
+    <h3>Your Information</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Public Address</th>
+          <td>A</td>
+        </tr>
+        <tr>
+          <th scope="row sm">Coin Balance</th>
+          <td>123</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr>
+    <h3>Mining</h3>
+    <button type="button" onClick="mineBlock()" class="btn btn-primary">CLICK ME TO MINE A BLOCK</button>
+
+    <hr>
+
+    <h3>Send coins</h3>
+    <form>
+      <div class="form-row">
+        <div class="form-group col-md-8">
+          <label for="address">Receiver Address</label>
+          <input type="text" class="form-control" id="addressInput" placeholder="04d24sdf35q2b33a8b02d233a...">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="amount">Amount</label>
+          <input type="amount" class="form-control" id="amountInput" placeholder="0">
+        </div>
+        <div class="form-group col-md-12">
+          <button type="submit" class="btn btn-primary">SEND</button>
         </div>
       </div>
-      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-   </body>
+    </form>
+    <hr>
+    <h3>Transaction Pool</h3>
+    <div class="alert alert-secondary" role="alert">
+      SDSDD
+    </div>
+  </div>
+
+  <script src="./javascripts/restAPI.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+  </script>
+</body>
+
 </html>

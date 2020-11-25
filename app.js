@@ -7,9 +7,9 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 
 const client = require("./db/redis").client;
-// var connect = require("./database");
 
 const indexRouter = require("./routes/index");
+const blockChainRouter = require("./routes/blockchain");
 
 var app = express();
 
@@ -25,6 +25,7 @@ app.use(cookieParser());
 
 // Main
 app.use("/", indexRouter);
+app.use("/blockchain", blockChainRouter);
 
 app.listen(4000, () => console.log("Server Up and running at 4000"));
 

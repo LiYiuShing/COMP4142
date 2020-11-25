@@ -4,7 +4,7 @@
 
 It built with Express("~4.16.1").
 
-## Pre-require
+## Prerequisite
 Node
 https://nodejs.org/en/
 
@@ -34,11 +34,13 @@ $ npm start
 And Browse http://localhost:4000/
 
 ## Development
-Please code in within your /src folder
+1. Please code within your /src folder
+2. Please pull once before push into repo
 
 ## Github Commit And Push
 
 ```
+$ git pull
 $ git add .
 $ git commit -m "Your Commit Messages"
 $ git remote add origin https://github.com/LiYiuShing/COMP4142.git
