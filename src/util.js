@@ -1,23 +1,32 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+class util {
+    constructor() {}
 
-const hexToBinary = (s) => {
-    let ret = '';
-    const lookupTable = {
-        '0': '0000', '1': '0001', '2': '0010', '3': '0011', '4': '0100',
-        '5': '0101', '6': '0110', '7': '0111', '8': '1000', '9': '1001',
-        'a': '1010', 'b': '1011', 'c': '1100', 'd': '1101',
-        'e': '1110', 'f': '1111'
-    };
-    for (let i = 0; i < s.length; i = i + 1) {
-        if (lookupTable[s[i]]) {
-            ret += lookupTable[s[i]];
-        }
-        else {
-            return null;
-        }
+    hex2bin(hex) {
+        hex = hex.replace("0x", "").toLowerCase();
+        var out = "";
+        for(var c of hex) {
+            switch(c) {
+                case '0': out += "0000"; break;
+                case '1': out += "0001"; break;
+                case '2': out += "0010"; break;
+                case '3': out += "0011"; break;
+                case '4': out += "0100"; break;
+                case '5': out += "0101"; break;
+                case '6': out += "0110"; break;
+                case '7': out += "0111"; break;
+                case '8': out += "1000"; break;
+                case '9': out += "1001"; break;
+                case 'a': out += "1010"; break;
+                case 'b': out += "1011"; break;
+                case 'c': out += "1100"; break;
+                case 'd': out += "1101"; break;
+                case 'e': out += "1110"; break;
+                case 'f': out += "1111"; break;
+                default: return "";
+            }
+        }    
+        return out;
     }
-    return ret;
-};
+}
 
-exports.hexToBinary = hexToBinary;
+module.exports = util;
