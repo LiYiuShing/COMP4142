@@ -8,10 +8,10 @@
 </head>
 
 <body>
-  <div class="container">
+  <div class="container" style="word-break:break-all;">
     <h1>COMP4142 E-Payment and CryptoCurrency - Wallet</h1>
     <h3>Your Information</h3>
-    <table class="table">
+    <table class="table table-responsive-md">
       <thead>
         <tr>
           <th scope="col">#</th>
@@ -20,21 +20,22 @@
       </thead>
       <tbody>
         <tr>
-          <th scope="row">Public Address</th>
-          <td>A</td>
+          <th style="white-space:nowrap;" scope="row">Public Address</th>
+          <td id="publicAddress"></td>
         </tr>
         <tr>
-          <th scope="row sm">Coin Balance</th>
-          <td>123</td>
+          <th style="white-space:nowrap;" scope="row">Coin Balance</th>
+          <td></td>
         </tr>
       </tbody>
     </table>
     <hr>
     <h3>Mining</h3>
     <button type="button" onClick="mineBlock()" class="btn btn-primary">CLICK ME TO MINE A BLOCK</button>
+    <div class="alert alert-secondary" style="margin-top: 10px;" role="alert" id="createBlock">
 
+    </div>
     <hr>
-
     <h3>Send coins</h3>
     <form>
       <div class="form-row">
@@ -59,6 +60,9 @@
   </div>
 
   <script src="./javascripts/restAPI.js"></script>
+  <script>
+    init();
+  </script>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
   </script>
