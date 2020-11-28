@@ -34,7 +34,7 @@ router.get("/getLatestBlock", function (req, res) {
     //   res.status(500).json({ error: error });
     // }
   });
-  result = blockChain.getGenesisBlock();
+  result = blockChain.getLatestBlock();
 
   res.json(result);
 });
