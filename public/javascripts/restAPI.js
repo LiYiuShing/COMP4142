@@ -10,11 +10,11 @@ async function getBalance() {
   return result;
 }
 
-function sendTransaction() {}
-
 async function mineBlock() {
   const response = await fetch("/blockchain/mineBlock");
   const result = await response.json();
+  balance = await getBalance();
+  document.getElementById("balance").innerHTML = balance.balance;
   document.getElementById("createBlock").innerHTML = JSON.stringify(
     result,
     null,
@@ -32,7 +32,40 @@ async function getLatestBlock() {
   );
 }
 
-function getTransactionPool() {}
+async function getTransactionPool() {
+  const response = await fetch("/blockchain/transactionPool");
+  const result = await response.json();
+  document.getElementById("transactionPool").innerHTML = JSON.stringify(
+    result,
+    null,
+    "\t"
+  );
+}
+async function transaction() {
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  var address = document.getElementById("addressVal").value;
+  var amount = document.getElementById("amountVal").value;
+
+  var raw = JSON.stringify({
+    address: address,
+    amount: amount,
+  });
+
+  var requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: raw,
+    redirect: "follow",
+  };
+
+  await fetch("/blockchain/sendTransaction", requestOptions)
+    .then((response) => response.text())
+    .then((result) => console.log(result))
+    .catch((error) => console.log("error", error));
+
+    await getTransactionPool();
+}
 
 async function init() {
   address = await getAddress();

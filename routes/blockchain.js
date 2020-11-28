@@ -1,15 +1,21 @@
-var express = require("express");
-var router = express.Router();
-const fs = require("fs");
+const express = require("express");
+const router = express.Router();
 
-var blockchain = require("../src/blockchain");
-var { getPublicFromWallet, initWallet, getBalance } = require("../src/wallet");
-var { getTransactionPool } = require("../src/transacrionPool.js");
+const blockchain = require("../src/blockchain");
+const { getPublicFromWallet, getBalance } = require("../src/wallet");
+const { getTransactionPool } = require("../src/transacrionPool.js");
+const { processTransactions } = require("../src/transaction");
+const { client } = require("../db/redis");
 
 let blockChain = new blockchain();
+blockChain.unspentTxOuts = processTransactions(
+  [blockChain.getGenesisBlock().data],
+  [],
+  0
+);
 
 router.get("/mineBlock", function (req, res) {
-  blockChain.addBlock(blockChain.generateNextBlock(""));
+  blockChain.generateNextBlock();
   res.json(blockChain.getLatestBlock());
 });
 
@@ -22,7 +28,14 @@ router.get("/balance", function (req, res) {
 });
 
 router.get("/getLatestBlock", function (req, res) {
-  result = blockChain.getLatestBlock();
+  client.get("key", (error, result) => {
+    console.log(error, result);
+    // if (error) {
+    //   res.status(500).json({ error: error });
+    // }
+  });
+  result = blockChain.getGenesisBlock();
+
   res.json(result);
 });
 
@@ -35,31 +48,20 @@ router.get("/transactionPool", (req, res) => {
   res.send(getTransactionPool());
 });
 
-// router.post("/sendTransaction", (req, res) => {
-//   try {
-//     const address = req.body.address;
-//     const amount = req.body.amount;
-
-//     if (address === undefined || amount === undefined) {
-//       throw Error("invalid address or amount");
-//     }
-//     const resp = blockChain.sendTransaction(address, amount);
-//     res.send(resp);
-//   } catch (e) {
-//     console.log(e.message);
-//     res.status(400).send(e.message);
-//   }
-// });
-
 router.post("/sendTransaction", (req, res) => {
-  const address = req.body.address;
-  const amount = req.body.amount;
+  try {
+    const address = req.body.address;
+    const amount = Number(req.body.amount);
 
-  if (address === undefined || amount === undefined) {
-    throw Error("invalid address or amount");
+    if (address === undefined || amount === undefined) {
+      throw Error("invalid address or amount");
+    }
+    const resp = blockChain.sendTransaction(address, amount);
+    res.send(resp);
+  } catch (e) {
+    console.log(e.message);
+    res.status(400).send(e.message);
   }
-  const resp = blockChain.generatenextBlockWithTransaction(address, amount);
-  res.send(resp);
 });
 
 router.get("/unspentTransactionOutputs", (req, res) => {
@@ -70,5 +72,17 @@ router.get("/myUnspentTransactionOutputs", (req, res) => {
   res.send(blockChain.getMyUnspentTransactionOutputs());
 });
 
+router.get("/peers", (req, res) => {
+  res.send(
+    getSockets().map(
+      (s) => s._socket.remoteAddress + ":" + s._socket.remotePort
+    )
+  );
+});
+
+router.post("/addPeer", (req, res) => {
+  connectToPeers(req.body.peer);
+  res.send();
+});
 
 module.exports = router;

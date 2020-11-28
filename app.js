@@ -11,6 +11,9 @@ const client = require("./db/redis").client;
 const indexRouter = require("./routes/index");
 const blockChainRouter = require("./routes/blockchain");
 
+const { connectToPeers, getSockets, initP2PServer } = require("./src/p2p");
+const { initWallet } = require("./src/wallet");
+
 var app = express();
 
 // Middleware
@@ -24,8 +27,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Main
+
 app.use("/", indexRouter);
 app.use("/blockchain", blockChainRouter);
+
+initP2PServer(6001);
+initWallet();
 
 app.listen(4000, () => console.log("Server Up and running at 4000"));
 

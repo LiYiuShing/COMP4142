@@ -1,7 +1,7 @@
-import * as bodyParser from "body-parser";
-import * as express from "express";
-import * as _ from "lodash";
-import {
+const bodyParser = require("body-parser");
+const express = require("express");
+const _ = require("lodash");
+const {
   generateNextBlock,
   generatenextBlockWithTransaction,
   generateRawNextBlock,
@@ -10,10 +10,11 @@ import {
   getMyUnspentTransactionOutputs,
   getUnspentTxOuts,
   sendTransaction,
-} from "./blockchain";
-import { connectToPeers, getSockets, initP2PServer } from "./p2p";
-import { getTransactionPool } from "./transactionPool";
-import { getPublicFromWallet, initWallet } from "./wallet";
+} = require("../src/blockchain");
+const { connectToPeers, getSockets, initP2PServer } = require("../src/p2p");
+const { getTransactionPool } = require("../src/transacrionPool");
+const { getPublicFromWallet, initWallet } = require("../src/wallet");
+
 const httpPort = parseInt(process.env.HTTP_PORT) || 3001;
 const p2pPort = parseInt(process.env.P2P_PORT) || 6001;
 const initHttpServer = (myHttpPort) => {

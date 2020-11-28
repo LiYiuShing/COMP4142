@@ -8,7 +8,6 @@ const {
   Transaction,
   TxIn,
   TxOut,
-  UnspentTxOuts,
 } = require("./transaction");
 
 const EC = new ec("secp256k1");

@@ -17,6 +17,9 @@ const {
   addToTransactionPool,
   updateTransactionPool,
 } = require("./transacrionPool");
+const {
+  client
+} = require("../db/redis")
 class block {
   constructor(index, timestamp, hash, previousHash, data, difficulty, nonce) {
     this.index = index;
@@ -39,7 +42,7 @@ class blockchain {
 
   saveToLocal() {
     const json = JSON.stringify(this.blocks);
-    fs.writeFile("output.json", json, (err) => {
+    fs.writeFile("./db/output.json", json, (err) => {
       if (err) {
         console.error(err);
       }
@@ -62,7 +65,7 @@ class blockchain {
             amount: 50,
           },
         ],
-        id: "e655f6a5f26dc9b4cac6e46f52336428287759cf81ef5ff10854f69d68f43fa3",
+        id: "100559594d822d9de2fcabc3c2355d637ba01e00c67bd21b6f395f96bc7fbc60",
       },
       0,
       0
@@ -123,7 +126,12 @@ class blockchain {
     return hashInBinary.startsWith(requiredPrefix);
   }
 
-  generateNextBlock(blockdata) {
+  generateNextBlock() {
+    const coinbaseTx = getCoinbaseTransaction(
+      getPublicFromWallet(),
+      this.getLatestBlock().index + 1
+    );
+    const blockdata = [coinbaseTx].concat(getTransactionPool());
     const previousBlock = this.getLatestBlock();
     const nextIndex = previousBlock.index + 1;
     const nextTimestamp = Math.round(new Date().getTime() / 1000);
@@ -139,14 +147,16 @@ class blockchain {
         nonce
       );
       if (this.hashMatchDifficulty(nextHash, difficulty)) {
-        return new block(
-          nextIndex,
-          nextTimestamp,
-          nextHash,
-          previousBlock.hash,
-          blockdata,
-          difficulty,
-          nonce
+        return this.addBlock(
+          new block(
+            nextIndex,
+            nextTimestamp,
+            nextHash,
+            previousBlock.hash,
+            blockdata,
+            difficulty,
+            nonce
+          )
         );
       }
       nonce++;
@@ -184,7 +194,7 @@ class blockchain {
     }
   }
 
-  // Transaction 
+  // Transaction
   unspentTxOuts() {
     processTransactions(this.blocks[0].data, [], 0);
   }
@@ -194,7 +204,6 @@ class blockchain {
   }
 
   setUnspentTxOuts(newUnspentTxOut) {
-    console.log("UnspentTxOut with: %s", newUnspentTxOut);
     this.unspentTxOuts = newUnspentTxOut;
   }
 
@@ -218,7 +227,7 @@ class blockchain {
       getTransactionPool()
     );
     var blockData = [coinbaseTx, tx];
-    return this.generateNextBlock(blockData);
+    return this.generateNextBlock();
   }
 
   sendTransaction(address, amount) {
