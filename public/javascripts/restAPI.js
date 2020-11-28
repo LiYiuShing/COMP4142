@@ -4,11 +4,11 @@ async function getAddress() {
   return result;
 }
 
-// async function getBalance() {
-//   const response = await fetch("/blockchain/balance");
-//   const result = await response.json();
-//   return result;
-// }
+async function getBalance() {
+  const response = await fetch("/blockchain/balance");
+  const result = await response.json();
+  return result;
+}
 
 function sendTransaction() {}
 
@@ -36,9 +36,11 @@ function getTransactionPool() {}
 
 async function init() {
   address = await getAddress();
-  // balance = await getBalance();
+  balance = await getBalance();
   await getLatestBlock();
 
   document.getElementById("publicAddress").innerHTML = address.address;
+  document.getElementById("balance").innerHTML = balance.balance;
+
   console.log(address);
 }

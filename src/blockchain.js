@@ -1,7 +1,22 @@
 const CryptoJS = require("crypto-js");
 let util = require("./util");
 let fs = require("fs");
-
+const _ = require("lodash");
+const {
+  processTransactions,
+  getCoinbaseTransaction,
+} = require("./transaction");
+const {
+  getPublicFromWallet,
+  findUnspentTxOuts,
+  createTransaction,
+  getPrivateFromWallet,
+} = require("./wallet");
+const {
+  getTransactionPool,
+  addToTransactionPool,
+  updateTransactionPool,
+} = require("./transacrionPool");
 class block {
   constructor(index, timestamp, hash, previousHash, data, difficulty, nonce) {
     this.index = index;
@@ -38,7 +53,17 @@ class blockchain {
       0,
       "948368f1eb3c037f19c2200142bf5a1bfecf2a884d06672d092bdd2b6c39f80d",
       0,
-      "Genesis Block",
+      {
+        txIns: [{ signature: "", txOutId: "", txOutIndex: 0 }],
+        txOuts: [
+          {
+            address:
+              "04958cde0111f53b978b3895631d37c0226947ba2e545647b0186477546f72148399fbe6cb9a0ba9872b45ace67292439aaad08efd4a83c6e2172208cd595aa7bf",
+            amount: 50,
+          },
+        ],
+        id: "e655f6a5f26dc9b4cac6e46f52336428287759cf81ef5ff10854f69d68f43fa3",
+      },
       0,
       0
     );
@@ -55,8 +80,15 @@ class blockchain {
   }
 
   addBlock(newBlock) {
+    const retVal = processTransactions(
+      newBlock.data,
+      this.getUnspentTxOuts(),
+      newBlock.index
+    );
     if (this.isValidNewBlock(newBlock, this.getLatestBlock())) {
       this.blocks.push(newBlock);
+      this.setUnspentTxOuts(retVal);
+      updateTransactionPool(this.unspentTxOuts);
       this.saveToLocal();
       return true;
     }
@@ -150,6 +182,55 @@ class blockchain {
       //console.log("unchange");
       return prevAdjustmentBlock.difficulty;
     }
+  }
+
+  // Transaction 
+  unspentTxOuts() {
+    processTransactions(this.blocks[0].data, [], 0);
+  }
+
+  getUnspentTxOuts() {
+    return _.cloneDeep(this.unspentTxOuts);
+  }
+
+  setUnspentTxOuts(newUnspentTxOut) {
+    console.log("UnspentTxOut with: %s", newUnspentTxOut);
+    this.unspentTxOuts = newUnspentTxOut;
+  }
+
+  getMyUnspentTransactionOutputs() {
+    return findUnspentTxOuts(getPublicFromWallet(), this.getUnspentTxOuts());
+  }
+
+  generatenextBlockWithTransaction(receiverAddress, amount) {
+    if (typeof amount !== "number") {
+      throw Error("invalid amount");
+    }
+    var coinbaseTx = getCoinbaseTransaction(
+      getPublicFromWallet(),
+      this.getLatestBlock().index + 1
+    );
+    var tx = createTransaction(
+      receiverAddress,
+      amount,
+      getPrivateFromWallet(),
+      this.getUnspentTxOuts(),
+      getTransactionPool()
+    );
+    var blockData = [coinbaseTx, tx];
+    return this.generateNextBlock(blockData);
+  }
+
+  sendTransaction(address, amount) {
+    var tx = createTransaction(
+      address,
+      amount,
+      getPrivateFromWallet(),
+      this.getUnspentTxOuts(),
+      getTransactionPool()
+    );
+    addToTransactionPool(tx, this.getUnspentTxOuts());
+    return tx;
   }
 }
 
