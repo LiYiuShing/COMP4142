@@ -20,6 +20,8 @@ async function mineBlock() {
     null,
     "\t"
   );
+  document.getElementById("transactionPool").innerHTML =
+    "Transaction Process Successfully!! Now Empty of Transaction Pool";
 }
 
 async function getLatestBlock() {
@@ -35,6 +37,7 @@ async function getLatestBlock() {
 async function getTransactionPool() {
   const response = await fetch("/blockchain/transactionPool");
   const result = await response.json();
+
   document.getElementById("transactionPool").innerHTML = JSON.stringify(
     result,
     null,
@@ -63,14 +66,13 @@ async function transaction() {
     .then((response) => response.text())
     .then((result) => console.log(result))
     .catch((error) => console.log("error", error));
-
-    await getTransactionPool();
 }
 
 async function init() {
   address = await getAddress();
   balance = await getBalance();
   await getLatestBlock();
+  getTransactionPool();
 
   document.getElementById("publicAddress").innerHTML = address.address;
   document.getElementById("balance").innerHTML = balance.balance;

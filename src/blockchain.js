@@ -17,9 +17,7 @@ const {
   addToTransactionPool,
   updateTransactionPool,
 } = require("./transacrionPool");
-const {
-  client
-} = require("../db/redis")
+const { client } = require("../db/redis");
 class block {
   constructor(index, timestamp, hash, previousHash, data, difficulty, nonce) {
     this.index = index;
@@ -38,6 +36,17 @@ class blockchain {
     this.difficulty = 0;
     this.BLOCK_GENERATION_INTERVAL = 10; // In second
     this.DIFFICULTY_ADJUSTMENT_INTERVAL = 10; // In block
+  }
+
+  saveState() {
+    const result = this.getLatestBlock();
+    client.set("getLatestBlock", JSON.stringify(result), (error, result) => {
+      if (error) {
+        res.status(500).json({ error: error });
+      } else {
+        console.log("Save Blockchain State To Redis Successfully!")
+      }
+    });
   }
 
   saveToLocal() {
@@ -93,6 +102,7 @@ class blockchain {
       this.setUnspentTxOuts(retVal);
       updateTransactionPool(this.unspentTxOuts);
       this.saveToLocal();
+      this.saveState();
       return true;
     }
     return false;

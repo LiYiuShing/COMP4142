@@ -6,6 +6,7 @@ const { getPublicFromWallet, getBalance } = require("../src/wallet");
 const { getTransactionPool } = require("../src/transacrionPool.js");
 const { processTransactions } = require("../src/transaction");
 const { client } = require("../db/redis");
+const redis = require("redis");
 
 let blockChain = new blockchain();
 blockChain.unspentTxOuts = processTransactions(
@@ -13,10 +14,27 @@ blockChain.unspentTxOuts = processTransactions(
   [],
   0
 );
+blockChain.saveState();
+
+router.get("/getLatestBlock", function (req, res) {
+  const state = client.get("getLatestBlock", (err, result) => {
+    if (err) console.log(err);
+    const data = JSON.parse(result);
+    console.log("Get Redis State", data);
+    res.json(data);
+  });
+  if (!state) res.json(blockChain.getLatestBlock());
+});
 
 router.get("/mineBlock", function (req, res) {
   blockChain.generateNextBlock();
-  res.json(blockChain.getLatestBlock());
+  const state = client.get("getLatestBlock", (err, result) => {
+    if (err) console.log(err);
+    const data = JSON.parse(result);
+    console.log("Get Redis State", data);
+    res.json(data);
+  });
+  if (!state) res.json(blockChain.getLatestBlock());
 });
 
 router.get("/balance", function (req, res) {
@@ -25,18 +43,6 @@ router.get("/balance", function (req, res) {
     blockChain.getUnspentTxOuts()
   );
   res.send({ balance: balance });
-});
-
-router.get("/getLatestBlock", function (req, res) {
-  client.get("key", (error, result) => {
-    console.log(error, result);
-    // if (error) {
-    //   res.status(500).json({ error: error });
-    // }
-  });
-  result = blockChain.getLatestBlock();
-
-  res.json(result);
 });
 
 router.get("/address", function (req, res) {
