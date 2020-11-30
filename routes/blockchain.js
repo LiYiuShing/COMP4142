@@ -6,18 +6,21 @@ const { getPublicFromWallet, getBalance } = require("../src/wallet");
 const { getTransactionPool } = require("../src/transacrionPool.js");
 const { processTransactions } = require("../src/transaction");
 const { client } = require("../db/redis");
-const redis = require("redis");
 const { connectToPeers, getSockets } = require("../src/p2p");
 
 let blockChain = new blockchain();
+
 blockChain.unspentTxOuts = processTransactions(
   [blockChain.getGenesisBlock().data],
   [],
   0
 );
 blockChain.saveState();
+blockChain.loadChain();
+
 
 router.get("/getLatestBlock", function (req, res) {
+  blockChain.loadChain();
   const state = client.get("getLatestBlock", (err, result) => {
     if (err) console.log(err);
     const data = JSON.parse(result);
@@ -28,6 +31,7 @@ router.get("/getLatestBlock", function (req, res) {
 });
 
 router.get("/mineBlock", function (req, res) {
+  blockChain.loadChain();
   blockChain.generateNextBlock();
   const state = client.get("getLatestBlock", (err, result) => {
     if (err) console.log(err);
@@ -39,6 +43,7 @@ router.get("/mineBlock", function (req, res) {
 });
 
 router.get("/balance", function (req, res) {
+  blockChain.loadChain();
   const balance = getBalance(
     getPublicFromWallet(),
     blockChain.getUnspentTxOuts()
@@ -47,6 +52,7 @@ router.get("/balance", function (req, res) {
 });
 
 router.get("/address", function (req, res) {
+  blockChain.loadChain();
   const address = getPublicFromWallet();
   res.send({ address: address });
 });
@@ -56,6 +62,7 @@ router.get("/transactionPool", (req, res) => {
 });
 
 router.post("/sendTransaction", (req, res) => {
+  blockChain.loadChain();
   try {
     const address = req.body.address;
     const amount = Number(req.body.amount);
@@ -72,10 +79,12 @@ router.post("/sendTransaction", (req, res) => {
 });
 
 router.get("/unspentTransactionOutputs", (req, res) => {
+  blockChain.loadChain();
   res.send(blockChain.getUnspentTxOuts());
 });
 
 router.get("/myUnspentTransactionOutputs", (req, res) => {
+  blockChain.loadChain();
   res.send(blockChain.getMyUnspentTransactionOutputs());
 });
 

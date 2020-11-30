@@ -31,13 +31,9 @@ app.use(cookieParser());
 app.use("/", indexRouter);
 app.use("/blockchain", blockChainRouter);
 
-initP2PServer(6001);
-initWallet(4000);
+initP2PServer(6002);
+initWallet(4001);
 
-const privateKeyLocation = process.env.PRIVATE_KEY || `node/wallet/private_key`;
-app.listen(4000, () => console.log("Server Up and running at 4000"));
+app.listen(4001, () => console.log("Server Up and running at 4001"));
 
-module.exports = {
-  privateKeyLocation,
-  app,
-};
+module.exports = app;

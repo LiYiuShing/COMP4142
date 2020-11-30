@@ -27,11 +27,20 @@ Open a new terminal
 $ git clone https://github.com/LiYiuShing/COMP4142.git
 $ cd comp4142
 $ npm install
-$ npm start
+$ npm run origin
+```
+
+Open a new terminal
+```
+$ git clone https://github.com/LiYiuShing/COMP4142.git
+$ cd comp4142
+$ npm install
+$ npm run peer
 ```
 
 
 And Browse http://localhost:4000/
+And Browse http://localhost:4001/
 
 ## Development
 1. Please code within your /src folder

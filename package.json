@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./app.js"
+    "origin": "node ./app.js",
+    "peer": "node ./appPeer.js" 
   },
   "dependencies": {
     "body-parse": "^0.1.0",

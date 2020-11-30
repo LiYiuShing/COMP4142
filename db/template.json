@@ -1,0 +1,26 @@
+[
+    {
+       "index":0,
+       "timestamp":0,
+       "hash":"948368f1eb3c037f19c2200142bf5a1bfecf2a884d06672d092bdd2b6c39f80d",
+       "previousHash":0,
+       "data":{
+          "txIns":[
+             {
+                "signature":"",
+                "txOutId":"",
+                "txOutIndex":0
+             }
+          ],
+          "txOuts":[
+             {
+                "address":"04958cde0111f53b978b3895631d37c0226947ba2e545647b0186477546f72148399fbe6cb9a0ba9872b45ace67292439aaad08efd4a83c6e2172208cd595aa7bf",
+                "amount":50
+             }
+          ],
+          "id":"100559594d822d9de2fcabc3c2355d637ba01e00c67bd21b6f395f96bc7fbc60"
+       },
+       "difficulty":0,
+       "nonce":0
+    }
+]

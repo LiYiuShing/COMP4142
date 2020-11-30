@@ -1,6 +1,7 @@
 const { ec } = require("elliptic");
 const { existsSync, readFileSync, unlinkSync, writeFileSync } = require("fs");
 const _ = require("lodash");
+const http = require('http');
 const {
   getPublicKey,
   getTransactionId,
@@ -11,7 +12,8 @@ const {
 } = require("./transaction");
 
 const EC = new ec("secp256k1");
-const privateKeyLocation = process.env.PRIVATE_KEY || "node/wallet/private_key";
+
+let privateKeyLocation = process.env.PRIVATE_KEY || `node/wallet/private_key`;
 
 const getPrivateFromWallet = () => {
   const buffer = readFileSync(privateKeyLocation, "utf8");
@@ -30,13 +32,13 @@ const generatePrivateKey = () => {
   return privateKey.toString(16);
 };
 
-const initWallet = () => {
+const initWallet = (port) => {
   // let's not override existing private keys
+  privateKeyLocation = privateKeyLocation + port;
   if (existsSync(privateKeyLocation)) {
     return;
   }
   const newPrivateKey = generatePrivateKey();
-
   writeFileSync(privateKeyLocation, newPrivateKey);
   console.log(
     "new wallet with private key created to : %s",
