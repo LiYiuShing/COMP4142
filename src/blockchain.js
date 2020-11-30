@@ -43,13 +43,23 @@ class blockchain {
       let currentChain = fs.readFileSync("./db/output.json");
       let chainData = JSON.parse(currentChain);
       for (let i = 0; i < chainData.length; i++) {
-        this.blocks[i] = new block(chainData[i].index, chainData[i].timestamp, chainData[i].hash, chainData[i].previousHash, chainData[i].data, chainData[i].difficulty, chainData[i].nonce)
-      };
+        this.blocks[i] = new block(
+          chainData[i].index,
+          chainData[i].timestamp,
+          chainData[i].hash,
+          chainData[i].previousHash,
+          chainData[i].data,
+          chainData[i].difficulty,
+          chainData[i].nonce
+        );
+      }
       this.blockchain = chainData;
-      this.saveState()
+
+      this.saveState();
       console.log("Load Chain Successfully ");
     } catch (err) {
-      console.log("No Chain", err);
+      this.saveToLocal();
+      console.log("init block")
     }
   }
 
