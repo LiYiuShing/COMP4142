@@ -7,6 +7,7 @@ const { getTransactionPool } = require("../src/transacrionPool.js");
 const { processTransactions } = require("../src/transaction");
 const { client } = require("../db/redis");
 const redis = require("redis");
+const { connectToPeers, getSockets } = require("../src/p2p");
 
 let blockChain = new blockchain();
 blockChain.unspentTxOuts = processTransactions(

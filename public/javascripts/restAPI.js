@@ -20,8 +20,7 @@ async function mineBlock() {
     null,
     "\t"
   );
-  document.getElementById("transactionPool").innerHTML =
-    "Transaction Process Successfully!! Now Empty of Transaction Pool";
+  getTransactionPool();
 }
 
 async function getLatestBlock() {
@@ -38,11 +37,15 @@ async function getTransactionPool() {
   const response = await fetch("/blockchain/transactionPool");
   const result = await response.json();
 
-  document.getElementById("transactionPool").innerHTML = JSON.stringify(
-    result,
-    null,
-    "\t"
-  );
+  if (!result.length) {
+    document.getElementById("transactionPool").innerHTML = "Empty";
+  } else {
+    document.getElementById("transactionPool").innerHTML = JSON.stringify(
+      result,
+      null,
+      "\t"
+    );
+  }
 }
 async function transaction() {
   var myHeaders = new Headers();
@@ -66,6 +69,8 @@ async function transaction() {
     .then((response) => response.text())
     .then((result) => console.log(result))
     .catch((error) => console.log("error", error));
+
+  getTransactionPool();
 }
 
 async function init() {

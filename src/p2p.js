@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const WebSocket = require("ws");
-const blockchain_1 = require("./blockchain");
+const blockChain = require("./blockchain");
 const sockets = [];
 var MessageType;
+let blockchain = new blockChain();
 
 (function (MessageType) {
   MessageType[(MessageType["LatestQuery"] = 0)] = "LatestQuery";
@@ -79,12 +80,12 @@ const queryAllMsg = () => ({ type: MessageType.AllQuery, data: null });
 
 const responseChainMsg = () => ({
   type: MessageType.RESBlockchain,
-  data: JSON.stringify(blockchain_1.getBlockchain()),
+  data: JSON.stringify(blockchain.getBlockchain()),
 });
 
 const responseLatestMsg = () => ({
   type: MessageType.RESBlockchain,
-  data: JSON.stringify([blockchain_1.getLatestBlock()]),
+  data: JSON.stringify(blockchain.getLatestBlock()),
 });
 
 const responseTransactionPoolMsg = () => ({
@@ -106,12 +107,8 @@ const handleBlockchainResponse = (receivedBlocks) => {
     console.log("Received block chain size of 0");
     return;
   }
-  const latestBlockReceived = receivedBlocks[receivedBlocks.length - 1];
-  if (!blockchain_1.isValidBlockStructure(latestBlockReceived)) {
-    console.log("Block structuture not valid");
-    return;
-  }
-  const latestBlockHeld = blockchain_1.getLatestBlock();
+
+  const latestBlockHeld = blockchain.getLatestBlock();
   if (latestBlockReceived.index > latestBlockHeld.index) {
     console.log(
       "Blockchain possibly behind. We got: " +
@@ -120,7 +117,7 @@ const handleBlockchainResponse = (receivedBlocks) => {
         latestBlockReceived.index
     );
     if (latestBlockHeld.hash === latestBlockReceived.previousHash) {
-      if (blockchain_1.addBlockToChain(latestBlockReceived)) {
+      if (blockchain.addBlockToChain(latestBlockReceived)) {
         broadcast(responseLatestMsg());
       }
     } else if (receivedBlocks.length === 1) {
@@ -128,7 +125,7 @@ const handleBlockchainResponse = (receivedBlocks) => {
       broadcast(queryAllMsg());
     } else {
       console.log("Received blockchain is longer than current blockchain");
-      blockchain_1.replaceChain(receivedBlocks);
+      blockchain.replaceChain(receivedBlocks);
     }
   } else {
     console.log(
