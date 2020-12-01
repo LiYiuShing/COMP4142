@@ -59,7 +59,7 @@ class blockchain {
       console.log("Load Chain Successfully ");
     } catch (err) {
       this.saveToLocal();
-      console.log("init block")
+      console.log("init block");
     }
   }
 

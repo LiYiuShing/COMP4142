@@ -1,7 +1,6 @@
 const { ec } = require("elliptic");
 const { existsSync, readFileSync, unlinkSync, writeFileSync } = require("fs");
 const _ = require("lodash");
-const http = require('http');
 const {
   getPublicKey,
   getTransactionId,

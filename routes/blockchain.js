@@ -18,7 +18,6 @@ blockChain.unspentTxOuts = processTransactions(
 blockChain.saveState();
 blockChain.loadChain();
 
-
 router.get("/getLatestBlock", function (req, res) {
   blockChain.loadChain();
   const state = client.get("getLatestBlock", (err, result) => {

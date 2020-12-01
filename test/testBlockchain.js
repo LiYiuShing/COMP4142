@@ -1,4 +1,4 @@
-var blockchain = require('../src/blockchain');
+var blockchain = require("../src/blockchain");
 
 var newBlockChain = new blockchain();
 

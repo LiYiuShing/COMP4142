@@ -265,7 +265,11 @@ const updateUnspentTxOuts = function (aTransactions, aUnspentTxOuts) {
   return resultingUnspentTxOuts;
 };
 
-const processTransactions = function (aTransactions, aUnspentTxOuts, blockIndex) {
+const processTransactions = function (
+  aTransactions,
+  aUnspentTxOuts,
+  blockIndex
+) {
   if (!validateBlockTransactions(aTransactions, aUnspentTxOuts, blockIndex)) {
     console.log("invalid block transactions");
     return null;

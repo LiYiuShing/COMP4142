@@ -1,10 +1,5 @@
 const _ = require("lodash");
-const {
-  Transaction,
-  TxIn,
-  UnspentTxOut,
-  validateTransaction,
-} = require("./transaction");
+const { validateTransaction } = require("./transaction");
 
 let transactionPool = [];
 

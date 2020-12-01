@@ -20,7 +20,7 @@ module.exports = {
   redis,
 };
 
-// Sample
+// Sample Usage
 
 // client.set("key", "vassslue", (error, result) => {
 //   console.log(error, result);

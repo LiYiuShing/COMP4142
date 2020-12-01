@@ -6,12 +6,10 @@ const logger = require("morgan");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 
-const client = require("./db/redis").client;
-
 const indexRouter = require("./routes/index");
 const blockChainRouter = require("./routes/blockchain");
 
-const { connectToPeers, getSockets, initP2PServer } = require("./src/p2p");
+const { initP2PServer } = require("./src/p2p");
 const { initWallet } = require("./src/wallet");
 
 var app = express();
@@ -27,7 +25,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Main
-
 app.use("/", indexRouter);
 app.use("/blockchain", blockChainRouter);
 
