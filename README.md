@@ -1,58 +1,62 @@
 # COMP4142 Group Project
 
 ## Introduction
-
-It built with Express("~4.16.1").
+It built with Node.js With the framework - Express("~4.16.1").
 
 ## Prerequisite
+Please ensure you have installed the following environments before getting started:
+
 Node
 https://nodejs.org/en/
-
-Git
-https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
 
 Redis
 https://redis.io/topics/quickstart
 
 
 ## Getting Started
+!import: You need to open three servers to run the project:
 
-Start the Redis server
+1.  Redis Server
+2.  Origin Server
+3.  Peer Server
+
+i. Start the Redis server
 ```
 $ redis-server
 ```
 
-Open a new terminal
+ii. Open a new terminal
 ```
-$ git clone https://github.com/LiYiuShing/COMP4142.git
 $ cd comp4142
 $ npm install
 $ npm run origin
 ```
 
-Open a new terminal
+iii. Open a new terminal
 ```
-$ git clone https://github.com/LiYiuShing/COMP4142.git
 $ cd comp4142
 $ npm install
 $ npm run peer
 ```
 
+## User Interface
+1. Front-end
+2. cURL
 
-And Browse http://localhost:4000/
-And Browse http://localhost:4001/
+### Using Front-end
+Browse http://localhost:4000/ to render the origin server in port 4000.
+Browse http://localhost:4001/ to render the peer server in port 4001.
 
-## Development
-1. Please code within your /src folder
-2. Please pull once before push into repo
+### Using RESTful API
+You can also using cURL to bypass the front-end:
 
-## Github Commit And Push
 
-```
-$ git pull
-$ git add .
-$ git commit -m "Your Commit Messages"
-$ git remote add origin https://github.com/LiYiuShing/COMP4142.git
-$ git branch -M main
-$ git push -u origin main
-```
+| Method | Description | Endpoint | Request | Response |
+| ------ | ------ | ----- | ----- | ----- | 
+| GET   | GET Latest Block | /blockchain/getLatestBlock | NULL | payload |
+| GET   | Mine A Block | /blockchain/mineBlock| NULL | payload |
+| GET   | Get the wallet balance | /blockchain/balance | NULL | payload |
+| GET   | Get the user Address | /blockchain/address | NULL | payload |
+| GET   | Get the transactionPool | /blockchain/transactionPool| NULL | payload |
+| POST   | Send Transaction| /blockchain/mineBlock| { "address" : "address", "amount": "amount" } | message |
+
