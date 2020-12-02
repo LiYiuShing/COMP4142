@@ -45,6 +45,7 @@ $ npm run peer
 
 ### Using Front-end
 Browse http://localhost:4000/ to render the origin server in port 4000.
+
 Browse http://localhost:4001/ to render the peer server in port 4001.
 
 ### Using RESTful API
@@ -52,7 +53,7 @@ You can also using cURL to bypass the front-end:
 
 
 | Method | Description | Endpoint | Request | Response |
-| ------ | ------ | ----- | ----- | ----- | 
+| ------ | ------ | ----- | ----- | ----- |
 | GET   | GET Latest Block | /blockchain/getLatestBlock | NULL | payload |
 | GET   | Mine A Block | /blockchain/mineBlock| NULL | payload |
 | GET   | Get the wallet balance | /blockchain/balance | NULL | payload |
@@ -60,3 +61,16 @@ You can also using cURL to bypass the front-end:
 | GET   | Get the transactionPool | /blockchain/transactionPool| NULL | payload |
 | POST   | Send Transaction| /blockchain/mineBlock| { "address" : "address", "amount": "amount" } | message |
 
+
+### File Structure 
+
+| Folder | Description |
+| ------ | ------ | 
+| /db | The storage of blockchain and the State Cache |
+| /node/wallet | The Private Key of the Origin and Peer |
+| /public | Front-End Script |
+| /router/blockchain | Router of the Project for cUrl |
+| /src | Five Goals Scripts |
+| /test | Blockchain testing code |
+| app.js | To Run the Origin Server |
+| appPeer.js | To Run the Peer Server |
