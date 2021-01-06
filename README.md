@@ -1,4 +1,4 @@
-# COMP4142 Group Project
+# A simple Blockchain in Javascript
 
 ## Introduction
 It built with Node.js With the framework - Express("~4.16.1").
